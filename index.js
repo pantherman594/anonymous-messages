@@ -1,17 +1,19 @@
 const axios = require('axios');
-const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
 
 const app = express();
+// heroku will set the port.
 const PORT = process.env.PORT || 5000;
 
+// setup parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post('/', (req, res) => {
-  console.log(req.body);
   res.status(200).send('');
+
+  // Post to response_url instead of directly replying, to hide the command
   axios.post(req.body.response_url, {
     response_type: 'in_channel',
     text: req.body.text,
@@ -27,6 +29,7 @@ app.get('/oauth', (req, res) => {
   }
 
   axios.get('https://slack.com/api/oauth.access', {
+    // slack app id and secret are configured in heroku
     params: {
       client_id: process.env.SLACK_ID,
       client_secret: process.env.SLACK_SECRET,
