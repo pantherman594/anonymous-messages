@@ -33,7 +33,7 @@ app.get('/oauth', (req, res) => {
       code: code,
     }
   });
-  res.send('Anonymous Messages has been activated.');
+  res.send('Anonymous Messages has been activated. You may close this tab.');
 });
 
 app.get('/', (req, res) => {
