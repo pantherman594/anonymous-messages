@@ -40,7 +40,7 @@ app.get('/oauth', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('To install Anonymous Messages, click <a href="https://slack.com/oauth/authorize?client_id=3291865129.529288519095&scope=commands">here</a>.');
+  res.send('To install Anonymous Messages, click <a href="https://slack.com/oauth/authorize?client_id=3291865129.529288519095&scope=commands">here</a>.<br /><a href="https://github.com/pantherman594/anonymous-messages">Source</a>');
 });
 
 app.listen(PORT, () => {
