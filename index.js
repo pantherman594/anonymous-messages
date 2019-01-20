@@ -17,6 +17,10 @@ app.post('/', (req, res) => {
   });
 });
 
+app.post('/oauth', (req, res) => {
+  res.status(200);
+});
+
 app.get('/', (req, res) => {
   res.send("HI!");
 });
