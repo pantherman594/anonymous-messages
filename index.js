@@ -1,12 +1,22 @@
 const axios = require('axios');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const TOKENS_FILE = 'tokens.json';
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+let rawTokenData;
+try {
+  rawTokenData = fs.readFileSync(TOKENS_FILE);
+} catch(err) {
+  rawTokenData = '{}';
+}
+const authTokens = JSON.parse(rawTokenData);
 
 app.post('/', (req, res) => {
   console.log(req.body);
@@ -18,6 +28,26 @@ app.post('/', (req, res) => {
 });
 
 app.get('/oauth', (req, res) => {
+  const code = req.query.code;
+
+  if (!code) {
+    res.send("Installation has been cancelled.");
+    return;
+  }
+
+  axios.get('https://slack.com/api/oauth.access', {
+    params: {
+      client_id: process.env.SLACK_ID,
+      client_secret: process.env.SLACK_SECRET,
+      code: code,
+    }
+  }).then(authRes => {
+    const token = authRes.access_token;
+    const id = authRes.team_id;
+
+    authTokens[id] = token;
+    fs.writeFileSync(TOKENS_FILE, JSON.stringify(authTokens));
+  });
   res.send("Anonymous Messages has been activated.");
 });
 
