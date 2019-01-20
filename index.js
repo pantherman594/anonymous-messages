@@ -17,12 +17,12 @@ app.post('/', (req, res) => {
   });
 });
 
-app.post('/oauth', (req, res) => {
-  res.status(200);
+app.get('/oauth', (req, res) => {
+  res.send("Anonymous Messages has been activated.");
 });
 
 app.get('/', (req, res) => {
-  res.send("HI!");
+  res.send("To install Anonymous Messages, go to https://slack.com/oauth/authorize?client_id=3291865129.529288519095&scope=commands");
 });
 
 app.listen(PORT, () => {
